@@ -1,39 +1,45 @@
 <template>
   <view class="userLayout pageBg">
-    <view class="userInfo">
+    <custom-nav-bar title="我的"></custom-nav-bar>
+
+    <view class="userInfo" v-if="userInfo">
       <view class="avatar">
         <image src="../../static/images/xxmLogo.png" mode="aspectFill" />
       </view>
       <view class="ip">
-        <text>IP: 192.168.1.1</text>
+        <text>IP: {{ userInfo.IP }}</text>
       </view>
       <view class="address">
-        <text>来自于: 北京市海淀区</text>
+        <text
+          >来自于: {{ userInfo.address.province }}
+          {{ userInfo.address.city }}</text
+        >
       </view>
     </view>
 
     <view class="section">
       <view class="list">
-        <navigator url="/pages/classlist/classlist" class="row">
+        <view @click="toClassList(1)" class="row uni-nav-link">
           <view class="left">
             <uni-icons type="download-filled" size="20" />
             <view class="text">我的下载</view>
           </view>
           <view class="right">
-            <view class="text">33</view>
+            <view class="text">{{ userInfo?.downloadSize }}</view>
             <uni-icons type="right" size="15" color="#aaa" />
           </view>
-        </navigator>
-        <navigator url="/pages/classlist/classlist" class="row">
+        </view>
+
+        <view @click="toClassList(2)" class="row uni-nav-link">
           <view class="left">
             <uni-icons type="star-filled" size="20" />
             <view class="text">我的评分</view>
           </view>
           <view class="right">
-            <view class="text">33</view>
+            <view class="text">{{ userInfo?.scoreSize }}</view>
             <uni-icons type="right" size="15" color="#aaa" />
           </view>
-        </navigator>
+        </view>
         <view class="row">
           <view class="left">
             <uni-icons type="chatboxes-filled" size="20" />
@@ -53,7 +59,7 @@
     </view>
     <view class="section">
       <view class="list">
-        <view class="row">
+        <view class="row" @click="onSubscribe">
           <view class="left">
             <uni-icons type="notification-filled" size="20" />
             <view class="text">订阅更新</view>
@@ -62,7 +68,7 @@
             <uni-icons type="right" size="15" color="#aaa" />
           </view>
         </view>
-        <view class="row">
+        <view class="row" @click="onCommonQuestion">
           <view class="left">
             <uni-icons type="flag-filled" size="20" />
             <view class="text">常见问题</view>
@@ -77,11 +83,47 @@
 </template>
 
 <script setup>
+import { getUserInfoAPI } from '@/api/apis'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
+const userInfo = ref(null)
 const clickContact = () => {
   uni.makePhoneCall({
     phoneNumber: '1234567890',
   })
 }
+const onCommonQuestion = () => {
+  console.log('onCommonQuestion')
+  uni.navigateTo({
+    url: '/pages/notice/detail?id=6536358ce0ec19c8d67fbe82',
+  })
+}
+const onSubscribe = () => {
+  console.log('onSubscribe')
+  uni.navigateTo({
+    url: '/pages/notice/detail?id=653507c6466d417a3718e94b',
+  })
+}
+
+const toClassList = type => {
+  if (type === 1) {
+    uni.navigateTo({
+      url: '/pages/classlist/classlist?name=我的下载&type=download',
+    })
+  } else if (type === 2) {
+    uni.navigateTo({
+      url: '/pages/classlist/classlist?name=我的评分&type=score',
+    })
+  }
+}
+const getUserInfo = async () => {
+  const res = await getUserInfoAPI()
+  console.log(res)
+  userInfo.value = res.data.data
+}
+onLoad(() => {
+  getUserInfo()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -160,16 +202,6 @@ const clickContact = () => {
           height: 100rpx;
           width: 100%;
           opacity: 0;
-        }
-        :deep(a) {
-          width: 100%;
-          position: relative;
-          display: flex;
-          justify-content: space-between;
-          height: 100rpx;
-          align-items: center;
-          border-bottom: 1px solid #dfdfdf;
-          background-color: #fff;
         }
       }
     }

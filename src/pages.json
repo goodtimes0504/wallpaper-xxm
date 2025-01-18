@@ -4,7 +4,8 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "推荐",
+				"enableShareTimeline": true,
 				"navigationStyle": "custom"
 			}
 		},
@@ -12,6 +13,7 @@
 			"path": "pages/classify/classify",
 			"style": {
 				"navigationBarTitleText": "分类",
+				"enableShareTimeline": true,
 				"navigationStyle": "custom"
 			}
 		},
@@ -25,8 +27,7 @@
 		{
 			"path": "pages/classlist/classlist",
 			"style": {
-				"navigationBarTitleText": "分类列表",
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "分类列表"
 			}
 		},
 		{
@@ -35,13 +36,32 @@
 				"navigationBarTitleText": "预览",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/notice/notice",
+			"style": {
+				"navigationBarTitleText": "公告"
+			}
+		},
+		{
+			"path": "pages/notice/detail",
+			"style": {
+				"navigationBarTitleText": "公告详情"
+			}
+		},
+		{
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "李成的壁纸库",
 		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"enableShareTimeline": true
 	},
 	"tabBar": {
 		"list": [

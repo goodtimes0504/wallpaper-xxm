@@ -1,13 +1,13 @@
 <template>
   <view class="themeItem">
-    <navigator url="/pages/classlist/classlist" class="box" v-if="!isMore">
-      <image
-        class="img"
-        src="../../common/images/classify1.jpg"
-        mode="aspectFill"
-      />
-      <view class="tab">3天前更新</view>
-      <view class="mask">明星美女</view>
+    <navigator
+      :url="`/pages/classlist/classlist?id=${item._id}&name=${item.name}`"
+      class="box"
+      v-if="!isMore"
+    >
+      <image class="img" :src="item.picurl" mode="aspectFill" />
+      <view class="tab">{{ formatTimeDifference(item.updateTime) }}前更新</view>
+      <view class="mask">{{ item.name }}</view>
     </navigator>
     <!-- 如果不加open-type无法跳转到tabbar 如果加了reLaunch可以 但是无法返回 所以用switchTab -->
 
@@ -27,10 +27,21 @@
 </template>
 
 <script setup>
-defineProps({
+import { formatTimeDifference } from "../../utils/common"
+const props = defineProps({
   isMore: {
     type: Boolean,
     default: false,
+  },
+  item: {
+    type: Object,
+    default: () => {
+      return {
+        name: "明星美女",
+        picurl: "/static/images/classify2.jpg",
+        updateTime: Date.now() - 1000 * 60 * 60 * 24 * 30,
+      }
+    },
   },
 })
 </script>
